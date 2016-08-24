@@ -20,6 +20,17 @@
 
 @implementation LoadingView
 
+- (CABasicAnimation *)animation {
+    if (!_animation) {
+        self.animation = [CABasicAnimation animationWithKeyPath:@"progress"];
+        self.animation.duration = 10.0f;
+        self.animation.fromValue = @0.0;
+        self.animation.toValue = @8.0;
+        self.animation.repeatCount = INFINITY;
+    }
+    return _animation;
+}
+
 - (void)drawRect:(CGRect)rect {
     [self setupLoadLayer];
 }
@@ -31,17 +42,12 @@
     self.loadingLayer.position = CGPointMake(screenWidth / 2.0, screenHeight / 2.0);
     self.loadingLayer.progress = 8;
     [self.layer addSublayer:self.loadingLayer];
-    
-    self.animation = [CABasicAnimation animationWithKeyPath:@"progress"];
-    self.animation.duration = 10.0f;
-    self.animation.fromValue = @0.0;
-    self.animation.toValue = @8.0;
-    self.animation.repeatCount = INFINITY;
     [self.loadingLayer addAnimation:self.animation forKey:@"test"];
 }
 
 - (void)setSpeedOfLoadingView:(float)speed {
-    [self.animation setSpeed:speed];
+//    [self.animation setSpeed:speed];
+    self.animation.speed = speed;
 }
 
 @end
