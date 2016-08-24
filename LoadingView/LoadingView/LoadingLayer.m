@@ -146,18 +146,15 @@
     CGFloat currDisSM = [Utils distanceBetweenPointA:startCircle.center pointB:moveCircle.center];
     if (currDisSM < distanceSE / 5.0 * 3) {
         //        [self.path removeAllPoints];
-        [self drawCurveWithPointA:pointSM1 pointB:pointSM2 controlPoint:[Utils midpointBetweenPointA:pointSM1 pointB:pointSM4]];
+        [self drawCurveWithPointA:pointSM1 pointB:pointSM2 controlPoint:[Utils midpointBetweenPointA:startCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointSM4];
         
-        [self drawCurveWithPointA:pointSM4 pointB:pointSM3 controlPoint:[Utils midpointBetweenPointA:pointSM3 pointB:pointSM2]];
+        [self drawCurveWithPointA:pointSM4 pointB:pointSM3 controlPoint:[Utils midpointBetweenPointA:startCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointSM1];
         
         [self.path moveToPoint:pointSM1];
         [self.path closePath];
         [self.path fill];
-        //        CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
-        //        CGContextAddPath(context, self.path.CGPath);
-        //        CGContextDrawPath(context, kCGPathFill);
     }else {
         CGFloat controlPointDistance = distanceSE - currDisSM + 30;
         CGFloat ß = controlPointDistance / self.distance;
@@ -177,10 +174,6 @@
         [self drawCurveWithPointA:pointSM2 pointB:pointSM4 controlPoint:controlPointMS];
         [self.path moveToPoint:pointSM2];
         [self.path closePath];
-        
-        //        CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
-        //        CGContextAddPath(context, self.path.CGPath);
-        //        CGContextDrawPath(context, kCGPathFill);
     }
     
     
@@ -214,10 +207,10 @@
                 [self.path closePath];
         
     }else if (currDisEM <= distanceSE / 5.0 * 2) {
-        [self drawCurveWithPointA:pointEM1 pointB:pointEM2 controlPoint:[Utils midpointBetweenPointA:pointEM1 pointB:pointEM4]];
+        [self drawCurveWithPointA:pointEM1 pointB:pointEM2 controlPoint:[Utils midpointBetweenPointA:endCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointEM4];
         
-        [self drawCurveWithPointA:pointEM4 pointB:pointEM3 controlPoint:[Utils midpointBetweenPointA:pointEM3 pointB:pointEM2]];
+        [self drawCurveWithPointA:pointEM4 pointB:pointEM3 controlPoint:[Utils midpointBetweenPointA:endCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointEM1];
         [self.path moveToPoint:pointEM1];
         
