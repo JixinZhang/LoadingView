@@ -54,7 +54,7 @@
 - (Circle *)moveCircle {
     if (!_moveCircle) {
         _moveCircle = [[Circle alloc] init];
-        _moveCircle.radius = 13;
+        _moveCircle.radius = 10;
     }
     return _moveCircle;
 }
@@ -68,6 +68,7 @@
 }
 
 - (void)drawInContext:(CGContextRef)ctx {
+    UIGraphicsPushContext(ctx);
     //绘制8个圆
     CGPoint center = CGPointMake(screenWidth / 2.0, screenHeight / 2.0);
     CGFloat radius = 120;
@@ -86,16 +87,13 @@
     //计算两个点之间的距离
     self.distance = [Utils distanceBetweenPointA:[centers[0] CGPointValue] pointB:[centers[1] CGPointValue]];
     
-    UIBezierPath *circlePath = [UIBezierPath bezierPath];
+
     CGFloat originstart = -M_PI_2;
     CGFloat currentOrigin = originstart + (M_PI_4 * self.progress);
-    CGFloat currentDest = 2 * M_PI - M_PI_2;
     
     CGFloat x = center.x + radius * cosf(currentOrigin);
     CGFloat y = center.y + radius * sinf(currentOrigin);
     CGPoint point = CGPointMake(x, y);
-    
-    [circlePath addArcWithCenter:center radius:radius startAngle:currentOrigin endAngle:currentDest clockwise:0];
     
     NSString *index = [NSString stringWithFormat:@"%.0f",floorf(self.progress)];
     NSInteger endCircleIndex = ((index.integerValue + 1) == 9 ? 0 : (index.integerValue + 1));
@@ -106,8 +104,7 @@
                moveCircle:self.moveCircle
                 endCircle:self.endCircle
                   context:ctx];
-
-
+    UIGraphicsPopContext();
 }
 
 /**
@@ -124,6 +121,18 @@
               endCircle:(Circle *)endCircle
                 context:(CGContextRef)context {
     [self.path removeAllPoints];
+    CGFloat currDisSM = [Utils distanceBetweenPointA:startCircle.center pointB:moveCircle.center];
+    if (currDisSM < (startCircle.radius + moveCircle.radius)) {
+        if ((startCircle.radius + moveCircle.radius - currDisSM) > 13.0f) {
+            moveCircle.radius = 13.0f;
+        }else if ((startCircle.radius + moveCircle.radius - currDisSM) > 10.0f) {
+            moveCircle.radius = startCircle.radius + moveCircle.radius - currDisSM;
+        }else {
+            moveCircle.radius = 10.0f;
+        }
+    }else {
+        moveCircle.radius = 10.0f;
+    }
     //绘制开始的圆
     [Utils drawCircle:context fillcolor:[UIColor redColor] radius:startCircle.radius point:startCircle.center];
     
@@ -143,7 +152,6 @@
     CGPoint pointSM3 = [pointsSM[2] CGPointValue];
     CGPoint pointSM4 = [pointsSM[3] CGPointValue];
     
-    CGFloat currDisSM = [Utils distanceBetweenPointA:startCircle.center pointB:moveCircle.center];
     if (currDisSM < distanceSE / 5.0 * 3) {
         //        [self.path removeAllPoints];
         [self drawCurveWithPointA:pointSM1 pointB:pointSM2 controlPoint:[Utils midpointBetweenPointA:startCircle.center pointB:moveCircle.center]];
@@ -185,8 +193,8 @@
     CGPoint pointEM3 = [pointsEM[2] CGPointValue];
     CGPoint pointEM4 = [pointsEM[3] CGPointValue];
     CGFloat currDisEM = [Utils distanceBetweenPointA:endCircle.center pointB:moveCircle.center];
-    if (currDisEM >= distanceSE / 5 * 2.0 &&
-        currDisEM < distanceSE / 2.0 ) {
+    if (currDisEM >= distanceSE / 3 &&
+        currDisEM <= distanceSE / 2.0 ) {
                 CGFloat controlPointDistance = currDisSM - distanceSE / 2.0;
                 CGFloat ß = controlPointDistance / distanceSE / 2.0;
                 CGFloat yEM = (moveCircle.center.y - endCircle.center.y) * ß + endCircle.center.y;
@@ -206,7 +214,7 @@
                 [self.path moveToPoint:pointEM1];
                 [self.path closePath];
         
-    }else if (currDisEM <= distanceSE / 5.0 * 2) {
+    }else if (currDisEM < distanceSE / 3) {
         [self drawCurveWithPointA:pointEM1 pointB:pointEM2 controlPoint:[Utils midpointBetweenPointA:endCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointEM4];
         

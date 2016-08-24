@@ -31,23 +31,29 @@
     return _animation;
 }
 
+- (LoadingLayer *)loadingLayer {
+    if (!_loadingLayer) {
+        _loadingLayer = [LoadingLayer layer];
+        _loadingLayer.contentsScale = [UIScreen mainScreen].scale;
+        _loadingLayer.bounds = CGRectMake(0, 0, screenWidth, screenHeight);
+        _loadingLayer.position = CGPointMake(screenWidth / 2.0, screenHeight / 2.0);
+        _loadingLayer.progress = 8;
+        [_loadingLayer addAnimation:self.animation forKey:@"test"];
+    }
+    return _loadingLayer;
+}
+
 - (void)drawRect:(CGRect)rect {
     [self setupLoadLayer];
 }
 
 - (void)setupLoadLayer {
-    self.loadingLayer = [LoadingLayer layer];
-    self.loadingLayer.contentsScale = [UIScreen mainScreen].scale;
-    self.loadingLayer.bounds = CGRectMake(0, 0, screenWidth, screenHeight);
-    self.loadingLayer.position = CGPointMake(screenWidth / 2.0, screenHeight / 2.0);
-    self.loadingLayer.progress = 8;
     [self.layer addSublayer:self.loadingLayer];
-    [self.loadingLayer addAnimation:self.animation forKey:@"test"];
 }
 
 - (void)setSpeedOfLoadingView:(float)speed {
-//    [self.animation setSpeed:speed];
-    self.animation.speed = speed;
+    self.loadingLayer.speed = speed;
+    [self.loadingLayer needsDisplay];
 }
 
 @end
