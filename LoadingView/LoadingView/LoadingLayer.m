@@ -152,7 +152,7 @@
     CGPoint pointSM3 = [pointsSM[2] CGPointValue];
     CGPoint pointSM4 = [pointsSM[3] CGPointValue];
     
-    if (currDisSM < distanceSE / 5.0 * 3) {
+    if (currDisSM < distanceSE / 5.0 * 2) {
         //        [self.path removeAllPoints];
         [self drawCurveWithPointA:pointSM1 pointB:pointSM2 controlPoint:[Utils midpointBetweenPointA:startCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointSM4];
