@@ -164,7 +164,7 @@
         [self.path closePath];
         [self.path fill];
     }else {
-        CGFloat controlPointDistance = distanceSE - currDisSM + 30;
+        CGFloat controlPointDistance = distanceSE - currDisSM + 20;
         CGFloat ß = controlPointDistance / self.distance;
         CGFloat ySM = (moveCircle.center.y - startCircle.center.y) * ß + startCircle.center.y;
         CGFloat xSM = (moveCircle.center.x - startCircle.center.x) * ß + startCircle.center.x;
@@ -195,7 +195,7 @@
     CGFloat currDisEM = [Utils distanceBetweenPointA:endCircle.center pointB:moveCircle.center];
     if (currDisEM >= distanceSE / 3 &&
         currDisEM <= distanceSE / 2.0 ) {
-                CGFloat controlPointDistance = currDisSM - distanceSE / 2.0;
+                CGFloat controlPointDistance = currDisSM - distanceSE / 2.0 - 2;
                 CGFloat ß = controlPointDistance / distanceSE / 2.0;
                 CGFloat yEM = (moveCircle.center.y - endCircle.center.y) * ß + endCircle.center.y;
                 CGFloat xEM = (moveCircle.center.x - endCircle.center.x) * ß + endCircle.center.x;
