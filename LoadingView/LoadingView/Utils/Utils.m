@@ -107,4 +107,14 @@
     return (2 * M_PI * radius * (angle / 360.0));
 }
 
++ (CGFloat)calculateAngleWithRadius:(CGFloat)radius
+                             center:(CGPoint)center
+                        startCenter:(CGPoint)startCenter
+                          endCenter:(CGPoint)endCenter {
+    //a^2 = b^2 + c^2 - 2bccosA;
+    CGFloat cosA = (2 * radius * radius - powf([Utils distanceBetweenPointA:startCenter pointB:endCenter], 2)) / (2 * radius * radius);
+    NSLog(@"+++++++%lf",cosA);
+    return 180 / M_PI * acosf(cosA);
+}
+
 @end

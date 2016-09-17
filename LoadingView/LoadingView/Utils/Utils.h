@@ -51,4 +51,8 @@
 + (CGFloat)calculateArcLengthRadius:(CGFloat)radius
                               angle:(CGFloat)angle;
 
++ (CGFloat)calculateAngleWithRadius:(CGFloat)radius
+                             center:(CGPoint)center
+                        startCenter:(CGPoint)startCenter
+                          endCenter:(CGPoint)endCenter;
 @end
