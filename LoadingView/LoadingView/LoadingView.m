@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) LoadingLayer *loadingLayer;
 @property (nonatomic, strong) CABasicAnimation *animation;
+
 @end
 
 @implementation LoadingView
