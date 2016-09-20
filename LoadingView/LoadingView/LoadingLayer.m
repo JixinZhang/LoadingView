@@ -131,7 +131,6 @@
                                             startCenter:startCircle.center
                                               endCenter:moveCircle.center];
     CGFloat currDisSM = (currAngle / 45) * arcLengthSE;
-//    NSLog(@"\n ==========%.3f^\t ==========%.3f",currAngle,currDisSM);
     if (currDisSM < (startCircle.radius + moveCircle.radius)) {
         if ((startCircle.radius + moveCircle.radius - currDisSM) > 13.0f) {
             moveCircle.radius = 13.0f;
@@ -212,14 +211,13 @@
         yDis = middlePoint.y - moveCircle.center.y;
         xDis = middlePoint.y - endCircle.center.y;
         CGFloat Zeta = (xDis - yDis) / xDis;
-        CGFloat controlPointDistance = 0.5 * arcLengthSE - currDisEM + 20;
+        CGFloat controlPointDistance = currDisSM - 0.5 * arcLengthSE + 20;
         CGFloat Beta = controlPointDistance / arcLengthSE / 6.0;
         
         CGFloat yEM = (moveCircle.center.y - endCircle.center.y) * Beta * Zeta + endCircle.center.y;
         CGFloat xEM = (moveCircle.center.x - endCircle.center.x) * Beta * Zeta + endCircle.center.x;
 
         CGPoint controlPoint = CGPointMake(xEM, yEM);
-    //        [self.path removeAllPoints];
         [self drawCurveWithPointA:pointEM2 pointB:pointEM4 controlPoint:controlPoint];
         [self.path moveToPoint:pointSM2];
         [self.path closePath];

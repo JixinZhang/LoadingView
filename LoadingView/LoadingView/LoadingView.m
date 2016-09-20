@@ -24,7 +24,7 @@
 - (CABasicAnimation *)animation {
     if (!_animation) {
         self.animation = [CABasicAnimation animationWithKeyPath:@"progress"];
-        self.animation.duration = 24.0f;
+        self.animation.duration = 16.0f;
         self.animation.fromValue = @0.0;
         self.animation.toValue = @8.0;
         self.animation.repeatCount = INFINITY;
