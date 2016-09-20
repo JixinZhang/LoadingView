@@ -40,6 +40,7 @@
           fillColor:(nullable UIColor *)fillColor
              points:(nullable NSArray *)points
              radius:(CGFloat)radius {
+    CGContextSaveGState(context);
     CGContextSetShouldAntialias(context, YES);
     CGContextSetFillColorWithColor(context, fillColor.CGColor);
     for (NSInteger i = 0; i < points.count; i++) {
@@ -48,6 +49,7 @@
         CGContextAddArc(context, point.x, point.y, radius, 0, M_PI * 2, 0);
         CGContextDrawPath(context, kCGPathFill);
     }
+    CGContextRestoreGState(context);
 }
 /*
  *画同心圆
@@ -113,7 +115,6 @@
                           endCenter:(CGPoint)endCenter {
     //a^2 = b^2 + c^2 - 2bccosA;
     CGFloat cosA = (2 * radius * radius - powf([Utils distanceBetweenPointA:startCenter pointB:endCenter], 2)) / (2 * radius * radius);
-    NSLog(@"+++++++%lf",cosA);
     return 180 / M_PI * acosf(cosA);
 }
 

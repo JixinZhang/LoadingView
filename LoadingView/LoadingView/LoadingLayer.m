@@ -131,7 +131,7 @@
                                             startCenter:startCircle.center
                                               endCenter:moveCircle.center];
     CGFloat currDisSM = (currAngle / 45) * arcLengthSE;
-    
+//    NSLog(@"\n ==========%.3f^\t ==========%.3f",currAngle,currDisSM);
     if (currDisSM < (startCircle.radius + moveCircle.radius)) {
         if ((startCircle.radius + moveCircle.radius - currDisSM) > 13.0f) {
             moveCircle.radius = 13.0f;
@@ -159,7 +159,7 @@
     CGPoint pointSM3 = [pointsSM[2] CGPointValue];
     CGPoint pointSM4 = [pointsSM[3] CGPointValue];
     
-    if (currDisSM < arcLengthSE / 6.0 * 2) {
+    if (currDisSM < arcLengthSE / 6.0 * 2.5) {
         
         [self drawCurveWithPointA:pointSM1 pointB:pointSM2 controlPoint:[Utils midpointBetweenPointA:startCircle.center pointB:moveCircle.center]];
         [self.path addLineToPoint:pointSM4];
@@ -202,24 +202,35 @@
     CGFloat currDisEM = [Utils distanceBetweenPointA:endCircle.center pointB:moveCircle.center];
     if (currDisSM >= arcLengthSE / 6.0 * 3 &&
         currDisSM <= arcLengthSE / 6.0 * 4) {
-                CGFloat controlPointDistance = currDisEM + 30;
-                CGFloat Beta = controlPointDistance / arcLengthSE / 2.0;
-                CGFloat yEM = (moveCircle.center.y - endCircle.center.y) * Beta + endCircle.center.y;
-                CGFloat xEM = (moveCircle.center.x - endCircle.center.x) * Beta + endCircle.center.x;
         
-                CGPoint controlPoint = CGPointMake(xEM, yEM);
-        //        [self.path removeAllPoints];
-                [self drawCurveWithPointA:pointEM2 pointB:pointEM4 controlPoint:controlPoint];
-                [self.path moveToPoint:pointSM2];
-                [self.path closePath];
+        CGFloat yDis;
+        CGFloat xDis;
+        CGPoint middlePoint;
+        if (currDisEM == arcLengthSE * 0.5) {
+            middlePoint = moveCircle.center;
+        }
+        yDis = middlePoint.y - moveCircle.center.y;
+        xDis = middlePoint.y - endCircle.center.y;
+        CGFloat Zeta = (xDis - yDis) / xDis;
+        CGFloat controlPointDistance = 0.5 * arcLengthSE - currDisEM + 20;
+        CGFloat Beta = controlPointDistance / arcLengthSE / 6.0;
         
-                CGFloat yME = (endCircle.center.y - moveCircle.center.y) * Beta + moveCircle.center.y;
-                CGFloat xME = (endCircle.center.x - moveCircle.center.x) * Beta + moveCircle.center.x;
-        
-                CGPoint controlPointMS = CGPointMake(xME, yME);
-                [self drawCurveWithPointA:pointEM1 pointB:pointEM3 controlPoint:controlPointMS];
-                [self.path moveToPoint:pointEM1];
-                [self.path closePath];
+        CGFloat yEM = (moveCircle.center.y - endCircle.center.y) * Beta * Zeta + endCircle.center.y;
+        CGFloat xEM = (moveCircle.center.x - endCircle.center.x) * Beta * Zeta + endCircle.center.x;
+
+        CGPoint controlPoint = CGPointMake(xEM, yEM);
+    //        [self.path removeAllPoints];
+        [self drawCurveWithPointA:pointEM2 pointB:pointEM4 controlPoint:controlPoint];
+        [self.path moveToPoint:pointSM2];
+        [self.path closePath];
+
+        CGFloat yME = (endCircle.center.y - moveCircle.center.y) * Beta * Zeta + moveCircle.center.y;
+        CGFloat xME = (endCircle.center.x - moveCircle.center.x) * Beta * Zeta + moveCircle.center.x;
+
+        CGPoint controlPointMS = CGPointMake(xME, yME);
+        [self drawCurveWithPointA:pointEM1 pointB:pointEM3 controlPoint:controlPointMS];
+        [self.path moveToPoint:pointEM1];
+        [self.path closePath];
         
     }else if (currDisSM >= arcLengthSE / 6.0 * 4) {
         [self drawCurveWithPointA:pointEM1 pointB:pointEM2 controlPoint:[Utils midpointBetweenPointA:endCircle.center pointB:moveCircle.center]];
